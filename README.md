@@ -1,2 +1,19 @@
-# moya
-SSAC Team Project - Real Time Q&amp;A service
+# Moya - Customer Project
+
+## _Real Time Q&A service_
+
+### **Login/Regist/Main**
+
+- Login
+
+- Regist
+
+- Main
+
+### **Board**
+
+- Board
+
+### **Chat**
+
+- Chat
