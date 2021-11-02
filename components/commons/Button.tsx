@@ -1,9 +1,11 @@
 import React from 'react';
 
-interface Props {}
+interface Props {
+  temp: 'hi';
+}
 
-const Button = (props: Props) => {
-  return <div></div>;
+const Button = ({ temp }: Props) => {
+  return <div>{temp}</div>;
 };
 
 export default Button;

@@ -16,12 +16,20 @@
     "prettier", // 8.0.0 버젼이상은 모두 prettier로 통합됨.
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    "eslint:recommended",
+    "next",
+    "airbnb"
   ],
   //plugin과 extends로 적용된 규칙에 덮어씌워져서 강제 설정할 수 있는 부분
   "rules": {
     "no-console": "off", // console.log(사용하는 것 금지)
-    "prettier/prettier": "error",
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ],
     "arrow-body-style": "off",
     "prefer-arrow-callback": "off",
     "react/react-in-jsx-scope": "off",
@@ -36,7 +44,11 @@
     "react/jsx-filename-extension": "off", // <> </>쓰는 것 방지
     "spaced-comment": "off", // 주석 쓰는 것 방지
     "no-unused-variable": "off",
-    "@typescript-eslint/no-non-null-assertion": "off"
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "linebreak-style": 0,
+    "react/jsx-props-no-spreading": "off",
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": ["error"]
   },
   "settings": {
     "react": {

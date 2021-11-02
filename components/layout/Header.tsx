@@ -1,9 +1,11 @@
 import React from 'react';
 
-interface Props {}
+interface Props {
+  temp: 'hi';
+}
 
-const Header = (props: Props) => {
-  return <div></div>;
+const Header = ({ temp }: Props) => {
+  return <div>{temp}</div>;
 };
 
 export default Header;
