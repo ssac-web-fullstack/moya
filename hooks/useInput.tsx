@@ -1,18 +1,10 @@
 import React, { useState } from 'react';
 
-interface Props {
-  initialValue: string;
-}
-
-const useInput = (initialValue) => {
-  const [value, setValue] = useState(initialValue);
-  const onChange = (evt) => {
-    console.log(evt.target);
+export const useInput = (initialValue: string): any => {
+  const [value, setValue] = useState<string>(initialValue);
+  const changeForm = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(evt.target.value);
   };
 
-  return { value, onChange };
+  return [{ value, onChange: changeForm }, () => setValue(initialValue)];
 };
-
-export default useInput;
-
-// 참고 https://velog.io/@tiahwang/%EA%B0%95%EC%9D%98%EB%85%B8%ED%8A%B8-Hooks-useInput
