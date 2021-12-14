@@ -67,14 +67,9 @@ const useStyles = makeStyles({
 //   { id: 9, title: '심심풀이' },
 //   { id: 10, title: '테스트방' },
 // ];
-interface chatType {
-  id: number;
-  title: string;
-}
-
-interface Props {
-  chatList: chatType[];
-}
+type Props = {
+  chatList: { id: number; title: string }[];
+};
 const ChatCard: React.FC<Props> = ({ chatList }) => {
   const classes = useStyles();
   return (

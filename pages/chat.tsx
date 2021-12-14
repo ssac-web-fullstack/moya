@@ -16,6 +16,9 @@ const useStyles = makeStyles({
     justifyContent: 'center',
   },
 });
+type Props = {
+  chat: { id: number; title: string }[];
+};
 const Chat: React.FC<Props> = ({ chat }) => {
   const [modal, setModal] = useState(false);
   const classes = useStyles();

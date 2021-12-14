@@ -1,13 +1,13 @@
 import { useRouter } from 'next/router';
-import React, { useEffect, useState, useContext, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import PersonIcon from '@mui/icons-material/Person';
 import Button from '@mui/material/Button';
-import { io } from 'socket.io-client';
-import { FixedSizeList as List } from 'react-window';
+import { io, Socket } from 'socket.io-client';
+// import { FixedSizeList as List } from 'react-window';
 import axios from 'axios';
 
 const useStyles = makeStyles({
@@ -61,14 +61,23 @@ const useStyles = makeStyles({
     marginRight: '20px',
   },
 });
-let socket;
+// interface ServerToClientEvents {
+//   noArg: () => void;
+//   basicEmit: (a: number, b: string, c: Buffer) => void;
+//   withAck: (d: string, callback: (e: number) => void) => void;
+// }
+
+// interface ClientToServerEvents {
+//   hello: () => void;
+// }
+let socket: Socket;
 const ChatRoom = () => {
   // const socket = useContext(SocketContext);
   const router = useRouter();
   const classes = useStyles();
   const messageEl = useRef(null);
 
-  const [roomNo, setRoomNo] = useState('');
+  const [roomNo, setRoomNo] = useState<string>('');
   const [chatList, setChatList] = useState([]);
   const [chatInput, setChatInput] = useState('');
 
@@ -102,11 +111,12 @@ const ChatRoom = () => {
 
   useEffect(() => {
     console.log('useEffect event');
-    socket.on('message', ({ id, message }) => {
+    socket.on('message', ({ id, message }: { id: number; message: string }) => {
       console.log(message);
       setChatList((prev) => prev.concat({ id, text: message }));
+      // setChatList([...chatList, { id, text: message }]);
     });
-    socket.on('onConnect', ({ text }) => {
+    socket.on('onConnect', ({ text }: { text: string }) => {
       console.log('clients onconnect');
       console.log(text);
     });
@@ -128,13 +138,13 @@ const ChatRoom = () => {
     router.back();
   };
 
-  const renderChat = ({ index, style }) => {
-    return (
-      <div style={{ display: 'flex' }}>
-        <p>{chatList[index].text}</p>
-      </div>
-    );
-  };
+  // const renderChat = ({ index, style }) => {
+  //   return (
+  //     <div style={{ display: 'flex' }}>
+  //       <p>{chatList[index].text}</p>
+  //     </div>
+  //   );
+  // };
   return (
     <div className={classes.container}>
       <AppBar position="static" className={classes.titleBar}>

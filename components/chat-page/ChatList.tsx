@@ -2,14 +2,9 @@ import React from 'react';
 // import { BrowserView, MobileView } from 'react-device-detect';
 import ChatCard from './ChatCard';
 
-interface chatType {
-  id: number;
-  title: string;
-}
-
-interface Props {
-  chatList: chatType[];
-}
+type Props = {
+  chatList: { id: number; title: string }[];
+};
 const ChatList: React.FC<Props> = ({ chatList }) => {
   return (
     <div style={{ margin: '0 25%' }}>
