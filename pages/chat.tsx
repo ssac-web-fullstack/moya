@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React, { useState } from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
@@ -15,13 +16,6 @@ const useStyles = makeStyles({
     justifyContent: 'center',
   },
 });
-
-interface Props {
-  chatType: {
-    id: number;
-    title: string;
-  }[];
-}
 const Chat: React.FC<Props> = ({ chat }) => {
   const [modal, setModal] = useState(false);
   const classes = useStyles();
@@ -37,7 +31,11 @@ const Chat: React.FC<Props> = ({ chat }) => {
     <div>
       <div className={classes.title}>채팅방 목록</div>
       <div className={classes.button}>
-        <Button variant="contained">새로고침</Button>
+        <Link href="/chat">
+          <a>
+            <Button variant="contained">새로고침</Button>
+          </a>
+        </Link>
         <Button variant="contained" onClick={modalHandler}>
           방 추가
         </Button>

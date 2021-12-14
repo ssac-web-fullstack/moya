@@ -1,12 +1,14 @@
 import { useRouter } from 'next/router';
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useRef } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import PersonIcon from '@mui/icons-material/Person';
-import io from 'socket.io-client';
-import { SocketContext } from '../../hook/socket.context';
+import Button from '@mui/material/Button';
+import { io } from 'socket.io-client';
+import { FixedSizeList as List } from 'react-window';
+import axios from 'axios';
 
 const useStyles = makeStyles({
   container: {
@@ -39,6 +41,14 @@ const useStyles = makeStyles({
     width: '20%',
     height: '35px',
   },
+  chatList: {
+    border: '1px solid black',
+    minHeight: '80vh',
+    maxHeight: '80vh',
+    marginBottom: '2%',
+    padding: '1rem',
+    overflow: 'scroll',
+  },
   chatContainer: {
     display: 'flex',
     alignItems: 'center',
@@ -51,14 +61,12 @@ const useStyles = makeStyles({
     marginRight: '20px',
   },
 });
-
-// let socket: any;
-
+let socket;
 const ChatRoom = () => {
-  const socket = useContext(SocketContext);
-
+  // const socket = useContext(SocketContext);
   const router = useRouter();
   const classes = useStyles();
+  const messageEl = useRef(null);
 
   const [roomNo, setRoomNo] = useState('');
   const [chatList, setChatList] = useState([]);
@@ -71,21 +79,27 @@ const ChatRoom = () => {
   }, [router.isReady, router.query.roomNo]);
 
   useEffect(() => {
-    // socket = io('http://localhost:3001');
-
-    if (roomNo) {
-      console.log(roomNo);
-      socket.emit('join', { username: 'name', roomNo });
+    if (messageEl) {
+      messageEl.current.addEventListener('DOMNodeInserted', (event) => {
+        const { currentTarget: target } = event;
+        target.scroll({ top: target.scrollHeight, behavior: 'smooth' });
+      });
     }
-    // return () => {
-    //   socket.disconnect();
-    // };
-  }, [roomNo, socket]);
+  }, []);
   useEffect(() => {
+    socket = io('http://localhost:3001');
+
     return () => {
       socket.disconnect();
     };
   }, []);
+  useEffect(() => {
+    if (roomNo) {
+      console.log(roomNo);
+      socket.emit('join', { username: 'socket', roomNo });
+    }
+  }, [roomNo]);
+
   useEffect(() => {
     console.log('useEffect event');
     socket.on('message', ({ id, message }) => {
@@ -96,10 +110,7 @@ const ChatRoom = () => {
       console.log('clients onconnect');
       console.log(text);
     });
-    socket.on('disconnect', () => {
-      socket.disconnect();
-    });
-  }, [socket]);
+  }, []);
 
   const enterChatHandler = (event) => {
     if (event.keyCode === 13) {
@@ -112,6 +123,18 @@ const ChatRoom = () => {
     socket.emit('message', { message: chatInput });
     setChatInput('');
   };
+  const onDeleteChatroom = async () => {
+    await axios.delete(`http://localhost:3001/api/0.1/chat/${roomNo}`);
+    router.back();
+  };
+
+  const renderChat = ({ index, style }) => {
+    return (
+      <div style={{ display: 'flex' }}>
+        <p>{chatList[index].text}</p>
+      </div>
+    );
+  };
   return (
     <div className={classes.container}>
       <AppBar position="static" className={classes.titleBar}>
@@ -119,9 +142,12 @@ const ChatRoom = () => {
           <Typography variant="h5" component="div" className={classes.titleText}>
             React 정보 공유방
           </Typography>
+          <Button onClick={onDeleteChatroom} variant="outlined">
+            삭제
+          </Button>
         </Toolbar>
       </AppBar>
-      <div>
+      <div className={classes.chatList} ref={messageEl}>
         {chatList.map((chat) => {
           return (
             <p key={chat.id} className={classes.chatContainer}>
@@ -131,6 +157,15 @@ const ChatRoom = () => {
           );
         })}
       </div>
+      {/* QQQQQ: change to react-window */}
+      {/* <List
+        height={window.innerHeight}
+        width={window.innerWidth - 20}
+        itemCount={chatList.length}
+        itemSize={10}
+      >
+        {renderChat}
+      </List> */}
       {/* <Grid> */}
       <div className={classes.inputContainer}>
         <PersonIcon className={classes.icon} />

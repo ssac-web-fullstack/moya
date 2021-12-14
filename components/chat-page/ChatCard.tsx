@@ -57,7 +57,7 @@ const useStyles = makeStyles({
 });
 // const chatData: ChatData[] = [
 //   { id: 1, title: '리액트 공부' },
-//   { id: 2, title: 'nextjs 공부' },
+//   { id: 2, title: 'next.js 공부' },
 //   { id: 3, title: 'html/css study' },
 //   { id: 4, title: 'typescript' },
 //   { id: 5, title: 'javascript' },
