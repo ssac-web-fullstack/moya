@@ -77,7 +77,7 @@ const ChatRoom = () => {
   const classes = useStyles();
   const messageEl = useRef(null);
 
-  const [roomNo, setRoomNo] = useState<string>('');
+  const [roomNo, setRoomNo] = useState<unknown>('');
   const [chatList, setChatList] = useState([]);
   const [chatInput, setChatInput] = useState('');
 
@@ -112,17 +112,14 @@ const ChatRoom = () => {
   useEffect(() => {
     console.log('useEffect event');
     socket.on('message', ({ id, message }: { id: number; message: string }) => {
-      console.log(message);
       setChatList((prev) => prev.concat({ id, text: message }));
-      // setChatList([...chatList, { id, text: message }]);
     });
     socket.on('onConnect', ({ text }: { text: string }) => {
-      console.log('clients onconnect');
       console.log(text);
     });
   }, []);
 
-  const enterChatHandler = (event) => {
+  const enterChatHandler = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.keyCode === 13) {
       socket.emit('message', { message: chatInput });
       setChatInput('');
