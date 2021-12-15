@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 import React from 'react';
 import { TextField, Button, Box, Grid } from '@material-ui/core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -52,6 +51,14 @@ const useStyles = makeStyles((theme: Theme) => ({
 const Regist = () => {
   const classes = useStyles();
 
+  interface bodyType {
+    name: string;
+    nickname: string;
+    loginId: string;
+    password: string;
+    email: string;
+  }
+
   const [nameProp, resetName] = useInput('');
   const [nicknameProp, resetNickname] = useInput('');
   const [loginIdProp, resetLoginId] = useInput('');
@@ -70,7 +77,7 @@ const Regist = () => {
     return regExp.test(mail);
   };
 
-  const onClickHandler = () => {
+  const onClickHandler = (): void => {
     if (!isValidPassword(passwordProp.value)) {
       return alert('비밀번호를 형식에 맞춰서 입력해주세요.');
     }
@@ -83,7 +90,7 @@ const Regist = () => {
       return alert('올바른 이메일을 입력해주세요.');
     }
 
-    const body = {
+    const body: bodyType = {
       name: nameProp.value,
       nickname: nicknameProp.value,
       loginId: loginIdProp.value,

@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
 import { TextField, Button, Box } from '@material-ui/core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Image from 'next/image';
 import Link from 'next/link';
 import axios from 'axios';
+import { useInput } from '../../hooks/useInput';
+import { customAlert } from '../../components/commons/CustomAlert';
 import logo from '../../public/moya-logo.png';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -43,22 +44,34 @@ const useStyles = makeStyles((theme: Theme) => ({
 const Login = () => {
   const classes = useStyles();
 
-  const [inputId, setinputId] = useState('');
-  const [inputPassword, setinputPassword] = useState('');
+  interface bodyType {
+    inputId: string;
+    inputPassword: string;
+  }
 
-  const changeinputId = (evt: any) => {
-    setinputId(evt.currentTarget.value);
-  };
-
-  const changeinputPassword = (evt: any) => {
-    setinputPassword(evt.currentTarget.value);
-  };
+  const [loginIdProp, resetloginId] = useInput('');
+  const [passwordProp, resetPassword] = useInput('');
 
   const onClickHandler = () => {
-    axios
-      .post('http://localhost:3001/api/0.1/login', { inputId, inputPassword })
-      .then((res) => console.log(res))
-      .catch((err) => console.error(err));
+    const body: bodyType = {
+      inputId: loginIdProp.value,
+      inputPassword: passwordProp.value,
+    };
+
+    if (body.inputId && body.inputPassword) {
+      axios
+        .post('http://localhost:3001/api/0.1/login', body)
+        .then((res) => console.log(res))
+        .catch((err) => console.error(err));
+
+      resetloginId();
+      resetPassword();
+    } else {
+      customAlert({
+        title: '올바른 형식을 입력해주세요.',
+        text: '아이디와 비밀번호를 모두 입력해주세요',
+      });
+    }
   };
 
   return (
@@ -75,8 +88,8 @@ const Login = () => {
               placeholder="아이디를 입력하세요."
               margin="normal"
               variant="outlined"
-              value={inputId}
-              onChange={changeinputId}
+              {...loginIdProp}
+              required
             />
           </Box>
           <Box className={classes.box}>
@@ -85,8 +98,8 @@ const Login = () => {
               placeholder="비밀번호를 입력하세요."
               margin="normal"
               variant="outlined"
-              value={inputPassword}
-              onChange={changeinputPassword}
+              {...passwordProp}
+              required
             />
           </Box>
         </form>
@@ -100,9 +113,7 @@ const Login = () => {
             로그인
           </Button>
           <Button className={classes.button} variant="contained" color="primary">
-            <Link href="/Regist">
-              <a>회원가입</a>
-            </Link>
+            <Link href="/user/Regist">회원가입</Link>
           </Button>
         </Box>
       </Grid>

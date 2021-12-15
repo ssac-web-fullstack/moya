@@ -8,6 +8,7 @@ class AppDocument extends Document {
     const originalRenderPage = ctx.renderPage;
 
     ctx.renderPage = () =>
+      // eslint-disable-next-line implicit-arrow-linebreak
       originalRenderPage({
         enhanceApp: (App) => (props) => {
           return sheet.collect(<App {...props} />);

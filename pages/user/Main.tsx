@@ -49,13 +49,13 @@ function Main() {
           <Box className={classes.box}>
             <AssignmentOutlined fontSize="large" />
             <div>
-              <Link href="/Login">게시판</Link>
+              <Link href="/user/Login">게시판</Link>
             </div>
           </Box>
           <Box className={classes.box}>
             <TextsmsOutlined fontSize="large" />
             <div>
-              <Link href="/Regist">채팅</Link>
+              <Link href="/user/Regist">채팅</Link>
             </div>
           </Box>
         </Grid>

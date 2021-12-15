@@ -23,6 +23,7 @@
   ],
   //plugin과 extends로 적용된 규칙에 덮어씌워져서 강제 설정할 수 있는 부분
   "rules": {
+    "object-curly-newline": "off",
     "no-console": "off", // console.log(사용하는 것 금지)
     "prettier/prettier": [
       "error",
