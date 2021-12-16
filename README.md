@@ -14,14 +14,7 @@
 - Regist
 - Main
 
-### **Board**
-
-- Board List
-- Board Create
-- Post / Post Update / Post Comment
-
 ### **Chat**
 
 - Chat List
 - Chat Room
-- Video Call
